@@ -1,17 +1,9 @@
-export class DrawManager{
-    scrollElement;
-    chart;
-    chartName;
-
-    x = new Array();
-    y = new Array();
-    T;
+export class ChartModule{
 
     constructor(data, chartName, scrollName){
         this.data = data;
         this.T = data.minParam;
-        this.chartName = chartName;
-        
+
         this.scrollElement = document.getElementById(scrollName);
         this.scrollElement.value = data.minParam;
         this.scrollElement.min = data.minParam;
@@ -37,11 +29,13 @@ export class DrawManager{
 
         switch(this.data.type){
             case "line":
+                this.x = new Array();
+                this.y = new Array();
                 for(var i = this.data.minX; i<=this.data.maxX; i+=this.data.stepX){
-                    this.x.push(i);
+                    this.x.push(i.toFixed(2));
                     this.y.push(this.computeByFunction(i));
                 }
-                //alert(this.y);
+                alert(this.y);
 
                 this.data.data.labels = this.x;
                 this.data.data.datasets[0].data = this.y;
@@ -54,18 +48,17 @@ export class DrawManager{
                     data: this.data.data,
 
                     // Configuration options go here
-                    options: {}
+                    options: this.data.option
                 });
                 break;
             default:
                 break;
-                
+
         }
     }
-    
+
     computeByFunction(X){
         var T = this.T
-
         return eval(this.data.func)
 
     }
